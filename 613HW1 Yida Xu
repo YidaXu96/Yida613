@@ -1,0 +1,231 @@
+setwd("C:/Users/yidax/OneDrive/Desktop/613/HW1/Data/Data")
+library(gmodels)
+library(dplyr)
+install.packages("data.table")
+library(data.table)
+install.packages("ggplot2")
+library(ggplot2)
+#Exercise1
+#1
+Datind2007<-read.csv("datind2007.csv")
+library(dplyr)
+numberhousehold<-group_by(Datind2007,idmen)
+count<-count(numberhousehold)
+nrow(count)
+
+#2
+Dathh2005<-read.csv("dathh2005.csv")
+mstatus<-group_by(Dathh2005,mstatus)
+count(mstatus)
+
+#3
+Datind2008<-read.csv("datind2008.csv")
+numberindividual<-group_by(Datind2008,idind)
+nrow(numberindividual)
+
+#4
+Datind2016<-read.csv("datind2016.csv")
+sum(between(Datind2016$age,25,35))
+
+#5
+Datind2009<-read.csv("datind2009.csv")
+CrossTable(Datind2009$gender,Datind2009$profession,prop.chisq = FALSE)
+table(Datind2009[,c("gender","profession")])
+
+#6
+Datind2005<-read.csv("datind2005.csv")
+summarise(Datind2005,mean(wage,na.rm=T),sd(wage,na.rm=T))
+quantile(Datind2005$wage,0.1,na.rm = T)
+quantile(Datind2005$wage,0.9,na.rm = T)
+D <- na.omit(Datind2005)
+D <- arrange(D,wage)
+D <- mutate(D,Rect = rank(wage)/n())
+D <- mutate(D,Rect_Income = cumsum(wage)/sum(wage))
+D <- mutate(D,gini = sum(2*(Rect- Rect_Income)/n()))
+D$gini
+Datind2019<-read.csv("datind2019.csv")
+summarise(Datind2019,mean(wage,na.rm=T),sd(wage,na.rm=T))
+quantile(Datind2019$wage,0.1,na.rm = T)
+quantile(Datind2019$wage,0.9,na.rm = T)
+D1 <- na.omit(Datind2019)
+D1 <- arrange(D1,wage)
+D1 <- mutate(D1,Rect = rank(wage)/n())
+D1 <- mutate(D1,Rect_Income = cumsum(wage)/sum(wage))
+D1 <- mutate(D1,gini = sum(2*(Rect- Rect_Income)/n()))
+D1$gini
+
+#7
+Datind2010<-read.csv("datind2010.csv")
+summarise(Datind2010,mean(age,na.rm=T),sd(age,na.rm=T))
+quantile(Datind2010$age,0.1,na.rm = T)
+quantile(Datind2010$age,0.9,na.rm = T)
+Female2010<-filter(Datind2010,gender=="Female")
+Male2010<-filter(Datind2010,gender=="Male")
+hist(Female2010$age,xlab = "age",freq = TRUE,main = "Female",col = "orange")
+hist(Male2010$age,xlab = "age",freq = TRUE,main = "Male",col = "red")
+quantile(Female2010$age,0.1,na.rm = T)
+quantile(Female2010$age,0.9,na.rm = T)
+summarise(Female2010,mean(age,na.rm=T),median(age,na.rm=T),sd(age,na.rm=T))
+summarise(Male2010,mean(age,na.rm=T),median(age,na.rm=T),sd(age,na.rm=T))
+quantile(Male2010$age,0.1,na.rm = T)
+quantile(Male2010$age,0.9,na.rm = T)
+
+#8
+Dathh2011<-fread("dathh2011.csv")
+Datind2011<-fread("datind2011.csv")
+newparis<-Dathh2011[which(Dathh2011$location=="Paris")]
+joinparis<-inner_join(Datind2011,newparis,c("idmen"))
+numberparis<-group_by(joinparis,location)
+count(numberparis)
+
+#Exercise2
+#1
+
+datind04<-fread("datind2004.csv",colClasses=c(idind="character",idmen="character"))
+datind05<-fread("datind2005.csv",colClasses=c(idind="character",idmen="character"))
+datind06<-fread("datind2006.csv",colClasses=c(idind="character",idmen="character"))
+datind07<-fread("datind2007.csv",colClasses=c(idind="character",idmen="character"))
+datind08<-fread("datind2008.csv",colClasses=c(idind="character",idmen="character"))
+datind09<-fread("datind2009.csv",colClasses=c(idind="character",idmen="character"))
+datind10<-fread("datind2010.csv",colClasses=c(idind="character",idmen="character"))
+datind11<-fread("datind2011.csv",colClasses=c(idind="character",idmen="character"))
+datind12<-fread("datind2012.csv",colClasses=c(idind="character",idmen="character"))
+datind13<-fread("datind2013.csv",colClasses=c(idind="character",idmen="character"))
+datind14<-fread("datind2014.csv",colClasses=c(idind="character",idmen="character"))
+datind15<-fread("datind2015.csv",colClasses=c(idind="character",idmen="character"))
+datind16<-fread("datind2016.csv",colClasses=c(idind="character",idmen="character"))
+datind17<-fread("datind2017.csv",colClasses=c(idind="character",idmen="character"))
+datind18<-fread("datind2018.csv",colClasses=c(idind="character",idmen="character"))
+datind19<-fread("datind2019.csv",colClasses=c(idind="character",idmen="character"))
+append1<-rbind(datind04,datind05,datind06,datind07,datind08,datind09,datind10,datind11,datind12,datind13,datind14,datind15,datind16,datind17,datind18,datind19)
+
+#2
+dathh04<-fread("dathh2004.csv",colClasses=c(idmen="character"))
+dathh05<-fread("dathh2005.csv",colClasses=c(idmen="character"))
+dathh06<-fread("dathh2006.csv",colClasses=c(idmen="character"))
+dathh07<-fread("dathh2007.csv",colClasses=c(idmen="character"))
+dathh08<-fread("dathh2008.csv",colClasses=c(idmen="character"))
+dathh09<-fread("dathh2009.csv",colClasses=c(idmen="character"))
+dathh10<-fread("dathh2010.csv",colClasses=c(idmen="character"))
+dathh11<-fread("dathh2011.csv",colClasses=c(idmen="character"))
+dathh12<-fread("dathh2012.csv",colClasses=c(idmen="character"))
+dathh13<-fread("dathh2013.csv",colClasses=c(idmen="character"))
+dathh14<-fread("dathh2014.csv",colClasses=c(idmen="character"))
+dathh15<-fread("dathh2015.csv",colClasses=c(idmen="character"))
+dathh16<-fread("dathh2016.csv",colClasses=c(idmen="character"))
+dathh17<-fread("dathh2017.csv",colClasses=c(idmen="character"))
+dathh18<-fread("dathh2018.csv",colClasses=c(idmen="character"))
+dathh19<-fread("dathh2019.csv",colClasses=c(idmen="character"))
+append2<-rbind(dathh04,dathh05,dathh06,dathh07,dathh08,dathh09,dathh10,dathh11,dathh12,dathh13,dathh14,dathh15,dathh16,dathh17,dathh18,dathh19)
+
+#3
+colnames(append1)
+colnames(append2)
+intersect(colnames(append1),colnames(append2))
+
+#4
+mergeappend<-left_join(append1,append2,c("idmen","year"))
+
+#5
+newdata<-group_by(mergeappend,idmen,year)
+countofnewdata<-summarise(newdata,count=n())
+filter(countofnewdata,count>4)
+nrow(filter(countofnewdata,count>4))
+
+#6
+append3<-filter(append1,empstat=="Unemployed")
+length(unique(append3$idmen))
+
+#7
+append4<-filter(append1,profession>0)
+append5<-group_by(append4,idmen,year,profession)
+number<-summarise(append5,count=n())
+nrow(filter(number,count>1))
+
+#8
+number8<-filter(mergeappend,mstatus == "Couple, with Kids")
+length(unique(number8$idind))
+
+#9
+number9<-filter(mergeappend,location == "Paris")
+length(unique(number9$idind))
+
+#10
+append10<-group_by(append1,year,idmen)
+max1<-table(append10$idmen,append10$year)
+max2<-as.data.frame(max1)
+max2[which.max(max2$Freq),]
+max2[which(max2$Freq=="14"),]
+
+#11
+idem2010<-filter(append1,year=="2010")
+length(unique(idem2010$idmen))
+
+idem2011<-filter(append1,year=="2011")
+length(unique(idem2011$idmen))
+
+
+#Exercise3
+#1
+yearmin=aggregate(mergeappend$year,by=list(mergeappend$idmen),FUN=min)
+yearmax=aggregate(mergeappend$year,by=list(mergeappend$idmen),FUN=max)
+yearlength<-merge(yearmax,yearmin,by="Group.1")
+yearlength[,4]=yearlength[,2]-yearlength[,3]
+#v4is the year each household enters and exists the panel.
+ggplot(select(yearlength,))
+
+#2
+append2edited<-append2
+append2edited$movein<-append2edited$year-append2edited$datent==0
+head(append2edited$movein,10)
+#[1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+mergeappededited<-mergeappend
+mergeappededited=as.data.frame(mergeappededited)
+mergeappededited$year<-as.numeric(as.character(mergeappededited$year))
+mergeappededited$idind<-as.numeric(as.character(mergeappededited$idind))
+mergeappededited$year = factor(mergeappededited$year)
+individualmove=c()
+individualmovein=c()
+individualnumber=c()
+individualn=c()
+for (i in 2004:2019) {
+  individualmove=length(na.omit(unique(mergeappededited[mergeappededited$datent==i&mergeappededited$year==i,'idind'])))
+individualmovein=c(individualmovein,individualmove)
+}
+for (i in 2004:2019) {
+  individualn=length(na.omit(unique(mergeappededited[mergeappededited$year==i,'idind'])))
+individualnumber=c(individualnumber,individualn)
+}
+shareofindividual<-data.frame(year=2004:2019,share=round(individualmovein/individualnumber,4))
+shareofindividual
+x1<-plot(shareofindividual$year,shareofindividual$share, xlab = "year", ylab = "Share")
+y1<-ggplot(select(shareofindividual,year,share),aes(x=year,y=share))+geom_line()
+
+
+#3
+Q33<-append2
+Q33<-group_by(Q33,idmen,year,myear)
+Q33<-filter(Q33,year==myear,year<2015)
+Q331<-append2
+Q331<-group_by(Q331,idmen,year,myear)
+Q331<-filter(Q331,move=="2",year>=2015)
+Q33t<-rbind(Q33,Q331)
+head(Q33t,10)
+
+individualmigration = c()
+for (i in 2004:2019){
+  individualmig = length(na.omit(unique(mergeappededited[(mergeappededited$myear == i 
+   | mergeappededited$move == 2) 
+  & mergeappededited$year == i,'idind'])))
+  individualmigration = c(individualmigration, individualmig)
+}
+shareofmigration = data.frame(year = 2004:2019, 
+   share = round(individualmigration / individualnumber,4))
+x2<-plot(shareofmigration$year,shareofmigration$share, xlab = "year", ylab = "migration share")
+y2<-ggplot(select(shareofmigration,year,share),aes(x=year,y=share))+geom_line()
+
+
+#4
+plot(shareofindividual, type = "o", pch = 17, col = "orange", xlab = "year", ylab = "share")
+lines(shareofmigration, type = "o", pch = 24, col = "black") 
+legend("bottomleft", c("share of individual", "share of migration"), lty = c(1,1), col = c("orange", "black"))
