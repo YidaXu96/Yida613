@@ -273,12 +273,15 @@ Conditionallike<- function(param, choice_rev1, quality) {
   N_j <-n_j - 1 
   pn1<-param[1: N_j]
   pn2<-param[( N_j+1):(2* N_j)] 
-  for (i in 1:n_i) {
-  return2[i,]<- pn1 * quality[i] 
+ for(j in 2:n_j){
+    return1[,j]= pn1[j-1]+pn2[j-1]*quality
   }
-  for (j in 2:n_j) {
-    return2[,j]<- return2[,j] + pn1[ (j-1) ]
+  prob = exp(return1)
+  prob = sweep(prob, MARGIN=1, FUN="/", STATS=rowSums(prob)) 
   }
+  probc = NULL
+  for (i in 1:n_i){
+    probc[i] = prob[i, choice_rev1[i] ] 
   prob <-exp(return2)
   prob <-sweep(prob, MARGIN=1, FUN="/", STATS=rowSums(prob)) 
   
